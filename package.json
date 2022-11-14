@@ -2,7 +2,7 @@
   "name": "postcss-unitlist",
   "description": "PostCSS plugin that can customize any unit and convert it to the specified unit according to the formula.",
   "author": "ZhanXiaoGe",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "keywords": [
     "postcss",

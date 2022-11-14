@@ -63,7 +63,7 @@ const verifyPropList = (propList = []) => {
 };
 
 const initOptions = options => {
-  let defaultOptions = { unitList: [], propList: ['*'], replace: true, media: true };
+  let defaultOptions = { unitList: [], propList: ['*'], replace: true, media: true, exclude: options.exclude || /node_modules/i };
   if (typeof options === 'object') {
     if (Array.isArray(options.unitList)) {
       options.unitList.forEach(item => {
@@ -89,16 +89,29 @@ const initOptions = options => {
 };
 
 module.exports = (options = {}) => {
-  let _this = this;
-  _this.options = initOptions(options);
-  _this.verifyProp = verifyPropList(_this.options.propList);
+  let isExcludeFile = false;
+  let that = this;
+  that.options = initOptions(options);
+  that.verifyProp = verifyPropList(that.options.propList);
   return {
     postcssPlugin: 'postcss-unitlist',
+    Once (css) {
+      if (that.options.exclude && css.source.input.file) {
+        if (typeof that.options.exclude === 'function') {
+          isExcludeFile = that.options.exclude(css.source.input.file);
+        } else if (typeof that.options.exclude === 'string') {
+          isExcludeFile = css.source.input.file.indexOf(that.options.exclude) !== -1;
+        } else {
+          isExcludeFile = css.source.input.file.match(that.options.exclude) !== null;
+        }
+      }
+    },
     Declaration (decl) {
-      _this.options.unitList.some(item => {
-        if (item.rule.test(decl.value) && _this.verifyProp(decl.prop)) {
+      if (isExcludeFile) return false;
+      that.options.unitList.some(item => {
+        if (item.rule.test(decl.value) && that.verifyProp(decl.prop)) {
           let value = replaceUnit(item.rule, item.math, item.unit, decl.value);
-          if (_this.options.replace) {
+          if (that.options.replace) {
             decl.value = value;
           } else {
             decl.cloneAfter({ value: value });
@@ -110,8 +123,9 @@ module.exports = (options = {}) => {
       });
     },
     AtRule (atRule) {
-      if (_this.options.media && atRule.name === 'media') {
-        _this.options.unitList.some(item => {
+      if (isExcludeFile) return false;
+      if (that.options.media && atRule.name === 'media') {
+        that.options.unitList.some(item => {
           if (item.rule.test(atRule.params)) {
             atRule.params = replaceUnit(item.rule, item.math, item.unit, atRule.params);
             return true;

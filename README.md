@@ -43,6 +43,14 @@ $ npm install postcss-unitlist --save-dev
   - Use `!` to not match a property. Example: `['*', '!letter-spacing']`
   - Combine the "not" prefix with the other prefixes. Example: `['*', '!font*']`
 - `unitList` (Array) List of matching rules for customize units.
+- `exclude` (String, Regexp, Function) The file path to ignore and leave as the original unit.
+    - If value is string, it checks to see if file path contains the string.
+        - `'exclude'` will match `\project\postcss-pxtorem\exclude\path`
+    - If value is regexp, it checks to see if file path matches the regexp.
+        - `/exclude/i` will match `\project\postcss-pxtorem\exclude\path`
+    - If value is function, you can use exclude function to return a true and the file will be ignored.
+        - the callback will pass the file path as  a parameter, it should returns a Boolean result.
+        - `function (file) { return file.indexOf('exclude') !== -1; }`
 
 ## Input/Output
 
