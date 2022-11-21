@@ -1,10 +1,15 @@
 const postcss = require('postcss');
 const postcssPlugin = require('./index.js');
 const postcssOptions = {
-  media: true,
+  media: false,
   replace: true,
   propList: ['*'],
   unitList: [
+    {
+      math: '$word / 16',
+      word: 'px',
+      unit: 'rem',
+    },
     {
       math: '$word / 100',
       word: 'rpx',
@@ -32,13 +37,13 @@ it('Case 002', async () => {
 
 it('Case 003', async () => {
   let input = '.rule { width: 0px; height: 0px; }';
-  let output = '.rule { width: 0px; height: 0px; }';
+  let output = '.rule { width: 0; height: 0; }';
   expect(postcss([postcssPlugin(postcssOptions)]).process(input).css).toBe(output);
 });
 
 it('Case 004', async () => {
   let input = '.rule { margin: 10rpx 10vpx 10rem 10vw; font-size: 10px; }';
-  let output = '.rule { margin: 0.1rem 1.33333vw 10rem 10vw; font-size: 10px; }';
+  let output = '.rule { margin: 0.1rem 1.33333vw 10rem 10vw; font-size: 0.625rem; }';
   expect(postcss([postcssPlugin(postcssOptions)]).process(input).css).toBe(output);
 });
 
@@ -68,7 +73,7 @@ it('Case 008', async () => {
 
 it('Case 009', async () => {
   let input = '.rule { margin: -24rpx calc(100% - 32px); height: calc(100% - 20rpx); }';
-  let output = '.rule { margin: -0.24rem calc(100% - 32px); height: calc(100% - 0.2rem); }';
+  let output = '.rule { margin: -0.24rem calc(100% - 2rem); height: calc(100% - 0.2rem); }';
   expect(postcss([postcssPlugin(postcssOptions)]).process(input).css).toBe(output);
 });
 
@@ -101,15 +106,15 @@ it('Case 013', async () => {
 });
 
 it('Case 014', async () => {
-  let input = '@media (min-width: 1024rpx) { .rule { font-size: 24rpx; } }';
-  let output = '@media (min-width: 10.24rem) { .rule { font-size: 0.24rem; } }';
+  let input = '@media (min-width: 1024px) { .rule { font-size: 24rpx; } }';
+  let output = '@media (min-width: 64rem) { .rule { font-size: 0.24rem; } }';
   let options = Object.assign(postcssOptions, { media: true, replace: true, propList: ['*'] });
   expect(postcss([postcssPlugin(options)]).process(input).css).toBe(output);
 });
 
 it('Case 015', async () => {
-  let input = '@media (min-width: 1024rpx) { .rule { font-size: 24rpx; } }';
-  let output = '@media (min-width: 1024rpx) { .rule { font-size: 0.24rem; } }';
+  let input = '@media (min-width: 1024px) { .rule { font-size: 24rpx; } }';
+  let output = '@media (min-width: 1024px) { .rule { font-size: 0.24rem; } }';
   let options = Object.assign(postcssOptions, { media: false, replace: true, propList: ['*'] });
   expect(postcss([postcssPlugin(options)]).process(input).css).toBe(output);
 });

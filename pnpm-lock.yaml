@@ -1,9 +1,9 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@johnrob1880/string-calc': ^1.0.2
+  '@johnrob1880/string-calc': ^1.0.0
   jest: ^28.1.3
-  postcss: ^8.4.19
+  postcss: ^8.0.0
 
 dependencies:
   '@johnrob1880/string-calc': 1.0.2
@@ -1525,8 +1525,8 @@ packages:
       '@types/node': 18.11.9
     dev: true
 
-  /jest-pnp-resolver/1.2.2_jest-resolve@28.1.3:
-    resolution: {integrity: sha512-olV41bKSMm8BdnuMsewT4jqlZ8+3TCARAXjZGT9jcoSnrfUnRCqnMoF9XEeoWjbzObpqF9dRhHQj0Xb9QdF6/w==}
+  /jest-pnp-resolver/1.2.3_jest-resolve@28.1.3:
+    resolution: {integrity: sha512-+3NpwQEnRoIBtx4fyhblQDPgJI0H1IEIkX7ShLUjPGA7TtUTvI1oiKi3SR4oBR0hQhQR80l4WAe5RrXBwWMA8w==}
     engines: {node: '>=6'}
     peerDependencies:
       jest-resolve: '*'
@@ -1559,7 +1559,7 @@ packages:
       chalk: 4.1.2
       graceful-fs: 4.2.10
       jest-haste-map: 28.1.3
-      jest-pnp-resolver: 1.2.2_jest-resolve@28.1.3
+      jest-pnp-resolver: 1.2.3_jest-resolve@28.1.3
       jest-util: 28.1.3
       jest-validate: 28.1.3
       resolve: 1.22.1

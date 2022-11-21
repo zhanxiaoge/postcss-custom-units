@@ -16,10 +16,15 @@ $ npm install postcss-unitlist --save-dev
 
 ```js
 {
-  media: true,
+  media: false,
   replace: true,
   propList: ['*'],
   unitList: [
+    {
+      math: '$word / 16',
+      word: 'px',
+      unit: 'rem',
+    },
     {
       math: '$word / 100',
       word: 'rpx',
@@ -34,16 +39,16 @@ $ npm install postcss-unitlist --save-dev
 }
 ```
 
-- `media` (Boolean) Allows conversion of customize units in media queries.
-- `replace` (Boolean) Replace rules that contain customize units instead of adding fallbacks.
-- `propList` (Array) Properties that allow conversion to customize units.
+- `media` (Boolean) Allows conversion of customize units in media queries. Default: `false`
+- `replace` (Boolean) Replace rules that contain customize units instead of adding fallbacks. Default: `true`
+- `propList` (Array) Properties that allow conversion to customize units. Default: `['*']`
   - Values need to be exact matches.
   - Use wildcard `*` to enable all properties. Example: `['*']`
   - Use `*` at the start or end of a word. (`['*position*']` will match `background-position-y`)
   - Use `!` to not match a property. Example: `['*', '!letter-spacing']`
   - Combine the "not" prefix with the other prefixes. Example: `['*', '!font*']`
-- `unitList` (Array) List of matching rules for customize units.
-- `exclude` (String, Regexp, Function) The file path to ignore and leave as the original unit.
+- `unitList` (Array) List of matching rules for customize units. Default: `[]`. Plugin will not work by default.
+- `exclude` (String, Regexp, Function) The file path to ignore and leave as the original unit. Default: `/node_modules/i`
     - If value is string, it checks to see if file path contains the string.
         - `'exclude'` will match `\project\postcss-pxtorem\exclude\path`
     - If value is regexp, it checks to see if file path matches the regexp.
@@ -64,7 +69,7 @@ $ npm install postcss-unitlist --save-dev
   border-radius: 0px;
 }
 
-@media (min-width: 1024rpx) { 
+@media (min-width: 1024px) { 
   .rule {
     font-size: 24rpx;
   } 
@@ -76,10 +81,10 @@ $ npm install postcss-unitlist --save-dev
   width: 7.5rem;
   height: 100vw;
   font-size: 0;
-  border-radius: 0px;
+  border-radius: 0;
 }
 
-@media (min-width: 10.24rem) { 
+@media (min-width: 1024px) { 
   .rule {
     font-size: 0.24rem;
   } 
